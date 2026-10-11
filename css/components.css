@@ -1,0 +1,151 @@
+/* ============================================================
+   components.css — Neumorphism 组件
+   卡片 / hero / 按钮 / 表格 / 提示块 / 代码 / 目录锚点
+   规则：无 border、无渐变、无直角、hover 阴影缩小、active 转凹陷
+   ============================================================ */
+
+/* ---- 章节卡片：凸起大卡（长在背景上的元素，hover 不位移）---- */
+article{
+  background: var(--bg);
+  border-radius: var(--r-lg);
+  box-shadow: var(--neu-rl);
+  padding: 30px 34px 34px;
+  transition: box-shadow var(--dur) var(--ease);
+}
+article:hover{
+  /* Hover Shadowing：阴影缩小（手指靠近遮光），非增大 */
+  box-shadow: var(--neu-rm);
+}
+
+/* ---- hero：强调色大卡（彩色底上用白字，禁灰字，对比 7.2:1）---- */
+.hero{
+  background: var(--accent);
+  color: #ffffff;
+  border-radius: var(--r-lg);
+  box-shadow: var(--neu-rxl);
+  padding: 38px 36px;
+}
+.hero h1{
+  margin: 0 0 14px; font-size: 28px; line-height: 1.35;
+  font-weight: 600; color: #ffffff; cursor: default;
+}
+.hero p{ margin: 6px 0; opacity: .96; font-size: 15px; }
+.hero .note{
+  margin-top: 16px;
+  padding: 12px 18px;
+  border-radius: var(--r-sm);
+  background: rgba(255,255,255,.14);      /* 同色系半透明，非新色块 */
+  font-size: 13.5px; line-height: 1.8;
+}
+.hero .note + .note{ margin-top: 10px; }
+.hero .note b{ color: #ffffff; }
+
+/* ---- 章标题行（可点击折叠）---- */
+h1{
+  display: flex; align-items: center; gap: 10px;
+  margin: 0; padding-bottom: 14px;
+  font-size: 22px; font-weight: 600; color: var(--ink);
+  border: none;                            /* 禁止边框，层次靠阴影与留白 */
+  cursor: pointer; user-select: none;
+}
+h1 .chip{                                 /* 章节序号徽章：凹陷 */
+  flex: none;
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  padding: 3px 10px; border-radius: 999px;
+  box-shadow: var(--neu-inset-soft);
+}
+h1 .arr{                                  /* 折叠指示 */
+  margin-left: auto; flex: none;
+  font-size: 13px; color: var(--ink-2);
+  transition: transform var(--dur) var(--ease);
+}
+article.folded .arr{ transform: rotate(-90deg); }
+h1:hover .chip{ box-shadow: var(--neu-inset-soft), 0 0 0 2px rgba(109,93,252,.25); }
+article.folded .sec{ display: none; }
+.sec{ transition: opacity .2s ease-in-out; }
+
+/* ---- 小节标题 ---- */
+h2{
+  font-size: 18.5px; font-weight: 600; color: var(--accent);
+  margin: 30px 0 12px;
+  scroll-margin-top: 76px;
+}
+h3{ font-size: 16px; font-weight: 600; margin: 22px 0 8px; color: var(--ink); }
+p{ margin: 9px 0; }
+ul, ol{ margin: 8px 0; padding-left: 24px; }
+li{ margin: 5px 0; }
+li::marker{ color: var(--accent); }
+hr{ border: none; border-top: 0; height: 0; margin: 20px 0; }  /* 无分隔线，用留白 */
+
+/* ---- 表格：凹陷容器承载，行 hover 用强调色轻染 ---- */
+.table-wrap{
+  overflow-x: auto;
+  margin: 14px 0;
+  padding: 6px;
+  border-radius: var(--r-md);
+  box-shadow: var(--neu-inset);            /* 凹陷托盘 */
+  transition: box-shadow var(--dur) var(--ease);
+}
+table{ width: 100%; border-collapse: collapse; font-size: 13.8px; }
+th, td{
+  padding: 9px 12px;
+  text-align: left; vertical-align: top; line-height: 1.7;
+  color: var(--ink);
+}
+th{ font-weight: 600; white-space: nowrap; color: var(--ink-2); font-size: 13px; }
+tbody tr{ transition: background var(--dur) var(--ease); border-radius: var(--r-sm); }
+tbody tr:hover{ background: rgba(109,93,252,.08); }   /* 强调色轻染，非高对比 */
+
+/* ---- 引用块（普通）：凹陷浅槽 ---- */
+blockquote{
+  margin: 14px 0; padding: 12px 18px;
+  border-radius: var(--r-sm);
+  box-shadow: var(--neu-inset-soft);
+  color: var(--ink-2); font-size: 14.5px;
+}
+blockquote p{ margin: 4px 0; }
+
+/* ---- 安全合规说明：警示强调块（红色圆点标记 + 凹陷，非高对比底色）---- */
+blockquote.notice-strong{
+  background: var(--bg);
+  box-shadow: var(--neu-inset);
+  padding: 16px 20px 16px 46px;
+  position: relative;
+  color: var(--ink); font-size: 15px;
+}
+blockquote.notice-strong::before{         /* 警示图标位（不破坏同色系） */
+  content: "!";
+  position: absolute; left: 16px; top: 16px;
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-red); color: #ffffff;
+  font-weight: 700; font-size: 14px;
+}
+blockquote.notice-strong strong{ color: var(--accent-red); font-size: 15.5px; }
+
+/* ---- 提示块（tip/warn 语义，来自 markdown 引用内的 💡/⚠️ 段落）---- */
+blockquote p:first-child b{ color: var(--ink); }
+
+/* ---- 代码 ---- */
+code{
+  background: var(--bg-lift);
+  border-radius: 6px;
+  padding: 1px 7px;
+  font-family: Consolas, Menlo, monospace;
+  font-size: .86em;
+  color: var(--ink);
+  word-break: break-all;
+  box-shadow: inset 1px 1px 2px var(--sh-dark), inset -1px -1px 2px var(--sh-light);
+}
+strong{ color: var(--ink); font-weight: 600; }
+
+/* ---- 章内目录链接 ---- */
+a{ transition: color var(--dur) var(--ease); }
+
+/* ---- 移动端微调：内边距与阴影降档 ---- */
+@media (max-width: 960px){
+  article{ padding: 22px 18px 26px; box-shadow: var(--neu-rm); }
+  .hero{ padding: 26px 20px; }
+  .hero h1{ font-size: 23px; }
+}
