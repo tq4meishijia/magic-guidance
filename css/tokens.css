@@ -1,0 +1,63 @@
+/* ============================================================
+   tokens.css — Neumorphism 设计令牌
+   光源方向锁死：亮阴影 -X/-Y（左上），暗阴影 +X/+Y（右下）
+   背景 #e0e5ec 单色系，元素与背景同色（Soft UI 核心原则）
+   ============================================================ */
+
+:root{
+  /* ---- 颜色 Token（STYLEKIT 配色方案）---- */
+  --bg:        #e0e5ec;   /* 背景主色 */
+  --bg-lift:   #f0f0f3;   /* 背景辅色（抬升表面） */
+  --sh-dark:   #b8bcc2;   /* 暗阴影（右下 +X/+Y） */
+  --sh-light:  #ffffff;   /* 亮阴影（左上 -X/-Y） */
+  --accent:    #6d5dfc;   /* 强调色（交互元素 / CTA） */
+  --accent-red:#ff6b6b;   /* 强调色（警示） */
+  --accent-teal:#4ecdc4;  /* 强调色（辅助） */
+  --ink:       #333333;   /* 主文字 */
+  --ink-2:     #5b6472;   /* 次要文字（在 #6b7280 基础上加深以满足 WCAG AA ≥4.5:1） */
+  --ink-3:     #8a93a3;   /* 弱化文字（仅用于装饰性小字） */
+  --ok:        #4ecdc4;   /* 成功/提示 */
+  --warn:      #ff6b6b;   /* 警示 */
+
+  /* ---- 圆角（禁止直角，12-24px 柔和曲率）---- */
+  --r-sm: 12px;           /* rounded-xl */
+  --r-md: 16px;
+  --r-lg: 24px;           /* rounded-2xl */
+
+  /* ---- 动效（Smooth Molding：软塑料柔韧感）---- */
+  --dur: .3s;
+  --ease: ease-in-out;
+
+  /* ---- 阴影 Token（双光源系统，模糊半径 ≈ 偏移 1.5-2 倍）---- */
+  /* 凸起-小（移动端默认） */
+  --neu-rs: 4px 4px 8px var(--sh-dark), -4px -4px 8px var(--sh-light);
+  /* 凸起-中 */
+  --neu-rm: 6px 6px 12px var(--sh-dark), -6px -6px 12px var(--sh-light);
+  /* 凸起-大（桌面端默认 / 卡片） */
+  --neu-rl: 8px 8px 16px var(--sh-dark), -8px -8px 16px var(--sh-light);
+  /* 凸起-特大（hero 容器） */
+  --neu-rxl: 12px 12px 24px var(--sh-dark), -12px -12px 24px var(--sh-light);
+  /* 悬停：阴影缩小（Hover Shadowing——手指靠近遮光，16px→8px） */
+  --neu-hover: 4px 4px 8px var(--sh-dark), -4px -4px 8px var(--sh-light);
+  /* 按下：凸起转凹陷（Extrude to Intrude） */
+  --neu-active: inset 4px 4px 8px var(--sh-dark), inset -4px -4px 8px var(--sh-light);
+  /* 输入/容器凹陷-深 */
+  --neu-inset: inset 6px 6px 12px var(--sh-dark), inset -6px -6px 12px var(--sh-light);
+  /* 输入/容器凹陷-浅（focus 时通道打开，深度减小） */
+  --neu-inset-soft: inset 2px 2px 4px var(--sh-dark), inset -2px -4px 4px var(--sh-light);
+}
+
+/* ---- 响应式阴影缩放：桌面端增大（md: 前缀的等价实现）---- */
+@media (min-width: 768px){
+  :root{
+    --neu-rs: 6px 6px 12px var(--sh-dark), -6px -6px 12px var(--sh-light);
+    --neu-rm: 8px 8px 16px var(--sh-dark), -8px -8px 16px var(--sh-light);
+    --neu-rl: 12px 12px 24px var(--sh-dark), -12px -12px 24px var(--sh-light);
+  }
+}
+
+/* ---- 无障碍：用户偏好减弱动效时关闭过渡 ---- */
+@media (prefers-reduced-motion: reduce){
+  :root{ --dur: 0s; }
+  *{ transition: none !important; scroll-behavior: auto !important; }
+}
