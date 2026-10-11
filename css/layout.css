@@ -1,0 +1,148 @@
+/* ============================================================
+   layout.css — 页面骨架与响应式布局
+   结构：顶栏 / 侧栏目录（桌面 sticky，移动抽屉）/ 主内容区
+   ============================================================ */
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+
+body{
+  margin: 0;
+  background: var(--bg);                 /* 单色浅灰底，禁止纯黑纯白 */
+  color: var(--ink);
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC",
+               -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+a{ color: var(--accent); text-decoration: none; }
+a:hover{ text-decoration: underline; }
+
+/* ---- 顶部阅读进度条（凹陷轨道 + 强调色填充）---- */
+#progress{
+  position: fixed; top: 0; left: 0; z-index: 99;
+  height: 4px; width: 0;
+  background: var(--accent);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  transition: width .1s linear;
+}
+
+/* ---- 顶栏：与背景同色，无 border，滚动后以柔和暗影分离 ---- */
+.topbar{
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 20px;
+  background: var(--bg);
+  transition: box-shadow var(--dur) var(--ease);
+}
+.topbar.scrolled{
+  /* 仅 +Y 暗影：顶栏上方是屏幕边缘，无反射光可形成亮影，光源方向不破坏 */
+  box-shadow: 0 6px 14px rgba(184,188,194,.55);
+}
+.topbar .brand{
+  font-weight: 600; font-size: 17px; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.topbar .tag{
+  margin-left: auto; flex: none;
+  font-size: 12px; color: var(--ink-2);
+  padding: 4px 14px; border-radius: 999px;
+  background: var(--bg); box-shadow: var(--neu-inset-soft);  /* 凹陷徽章 */
+}
+
+/* ---- 汉堡按钮（移动端）---- */
+#menuBtn{
+  display: none; flex: none;
+  width: 40px; height: 40px;
+  border: none; cursor: pointer;
+  border-radius: var(--r-sm);
+  background: var(--bg); color: var(--ink);
+  box-shadow: var(--neu-rs);
+  transition: all var(--dur) var(--ease);
+  font-size: 16px;
+}
+#menuBtn:hover{ box-shadow: 3px 3px 6px var(--sh-dark), -3px -3px 6px var(--sh-light); } /* Hover Shadowing：缩小 */
+#menuBtn:active{ box-shadow: var(--neu-active); }                                        /* Extrude to Intrude */
+#menuBtn:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- 两栏布局 ---- */
+.layout{
+  display: flex; align-items: flex-start;
+  max-width: 1200px; margin: 0 auto;
+}
+
+/* ---- 侧栏目录 ---- */
+.sidebar{
+  width: 264px; flex: none;
+  position: sticky; top: 64px;
+  max-height: calc(100vh - 76px);
+  overflow-y: auto;
+  padding: 18px 10px 40px 14px;
+}
+.sidebar .cap{
+  font-size: 12px; font-weight: 600; letter-spacing: 4px;
+  color: var(--ink-3); margin: 0 6px 10px;
+}
+.sidebar a{
+  display: block; margin: 6px 4px;
+  padding: 9px 12px;
+  border-radius: var(--r-sm);
+  color: var(--ink-2); font-size: 14px; line-height: 1.5;
+  background: transparent;
+  transition: all var(--dur) var(--ease);
+}
+.sidebar a:hover{
+  background: var(--bg); color: var(--accent);
+  box-shadow: var(--neu-rs);            /* 凸起 = 可点击 */
+  text-decoration: none;
+}
+.sidebar a.on{
+  background: var(--bg); color: var(--accent); font-weight: 600;
+  box-shadow: var(--neu-inset-soft);    /* 凹陷 = 已激活（核心理念） */
+}
+
+/* ---- 主内容区 ---- */
+main{
+  flex: 1; min-width: 0;
+  padding: 24px 24px 80px;
+  display: flex; flex-direction: column; gap: 22px;
+}
+
+/* ---- 返回顶部（圆形凸起钮）---- */
+#backtop{
+  position: fixed; right: 24px; bottom: 28px; z-index: 80;
+  width: 46px; height: 46px;
+  border: none; cursor: pointer;
+  border-radius: 50%;
+  background: var(--bg); color: var(--accent); font-size: 18px;
+  box-shadow: var(--neu-rm);
+  opacity: 0; pointer-events: none;
+  transition: all var(--dur) var(--ease);
+}
+#backtop.show{ opacity: 1; pointer-events: auto; }
+#backtop:hover{ box-shadow: 3px 3px 6px var(--sh-dark), -3px -3px 6px var(--sh-light); }
+#backtop:active{ box-shadow: var(--neu-active); }
+#backtop:focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ---- 页脚 ---- */
+footer{
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 26px 48px;
+  color: var(--ink-2); font-size: 13px;
+}
+
+/* ---- 响应式：<960px 侧栏转抽屉 ---- */
+@media (max-width: 960px){
+  #menuBtn{ display: block; }
+  .sidebar{
+    position: fixed; left: 0; top: 64px; bottom: 0; z-index: 60;
+    width: 280px; max-height: none;
+    background: var(--bg);
+    box-shadow: 12px 0 24px rgba(184,188,194,.5);  /* 抽屉投影：+X 暗影，光源一致 */
+    transform: translateX(-108%);
+    transition: transform var(--dur) var(--ease);
+  }
+  .sidebar.open{ transform: none; }
+  main{ padding: 16px 14px 64px; }
+}
