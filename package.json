@@ -1,0 +1,10 @@
+{
+  "name": "magic-guidance",
+  "version": "1.0.0",
+  "description": "Neumorphism style static documentation site (multi-platform proxy tools guide, technical exchange only)",
+  "private": true,
+  "scripts": {
+    "serve": "npx serve .",
+    "build": "python scripts/build.py"
+  }
+}
